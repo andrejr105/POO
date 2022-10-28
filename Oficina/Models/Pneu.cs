@@ -64,15 +64,25 @@
         }
         public void Girar(int _rotacao)
         {
-            if (Furado || Estourado)
-                return;
-            
+
             Rotacao += _rotacao;
+            if (Furado || Estourado)
+            {
+                Rotacao = 0;
+            }
+
+
             GastarBorracha(_rotacao / 100.0);
         }
         public void Frear(int _abatimento)
         {
+            
             Rotacao -= _abatimento;
+            if(Rotacao < 0)
+            {
+                Rotacao = 0;
+            }
+
             GastarBorracha(_abatimento / 100.0);
         }
         public void Furar()
@@ -98,6 +108,7 @@
             PercentualBorracha = 0;
             Rotacao= 0;
         }
+        
         public void Exibir()
         {
             Console.WriteLine("Aro: " + Aro);

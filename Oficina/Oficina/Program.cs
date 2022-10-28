@@ -4,15 +4,16 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Carro corcel = new Carro("Chevrolet", "2");
+        Models.Carro corcel = new Models.Carro("Chevrolet", "2");
         corcel.LigarDesligar();
-        corcel.Acelerar(5);
-        corcel.Abastecer(50);
-        corcel.Frear(30);
-        corcel.Acelerar(500);
-        corcel.Frear(300);
-        corcel.Acelerar(500);
-        corcel.Frear(200);
+        
+        for(int i = 0; i < 10; i++)
+        {
+            corcel.Acelerar(15);
+            corcel.Frear(9);
+            corcel.Abastecer(1);
+        }
+
         corcel.Exibir();
 
     }

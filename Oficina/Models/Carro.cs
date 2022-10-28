@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,22 +22,43 @@ namespace Models
         public Pneu PneuTrazeiroDireito
         {
             get { return pneuTrazeiroDireito; }
-            set { pneuTrazeiroDireito = value; }
+            set
+            {
+                if (VelocidadeAtual == 0)
+                    pneuTrazeiroDireito = value;
+                else
+                    Console.WriteLine("Desliga o carro amigo");
+            }
         }
         public Pneu PneuTrazeiroEsquerdo
         {
             get { return pneuTrazeiroEsquerdo; }
-            set { pneuTrazeiroEsquerdo = value; }
+            set {
+                if(VelocidadeAtual == 0)
+                pneuTrazeiroEsquerdo = value;
+                else
+                    Console.WriteLine("Desliga o carro amigo");
+            }
         }
         public Pneu PneuDianteiroDireito
         {
             get { return pneuDianteiroDireito; }
-            set { pneuDianteiroDireito = value; }
+            set {
+                if (VelocidadeAtual == 0)
+                    pneuDianteiroDireito = value;
+                else
+                    Console.WriteLine("Desliga o carro amigo");
+            }
         }
         public Pneu PneuDianteiroEsquerdo
         {
             get { return pneuDianteiroEsquerdo; }
-            set { pneuDianteiroEsquerdo = value; }
+            set {
+                if (VelocidadeAtual == 0)
+                    pneuDianteiroEsquerdo = value;
+                else
+                    Console.WriteLine("Desliga o carro amigo");
+            }
         }
         public bool Ligado
         {
@@ -96,38 +118,60 @@ namespace Models
         }
         public void Acelerar(int _impulso)
         {
-            if (!Ligado)
+
+            if (!Ligado) { 
                 return;
-
-            if (tanque == 0)
+            }
+            if (tanque == 0) { 
                 LigarDesligar();
+            }
 
-            GastarCombustivel(_impulso / 100.0);
             if (Ligado)
             {
-                PneuDianteiroDireito.Girar(_impulso);
-                PneuDianteiroEsquerdo.Girar(_impulso);
-                PneuTrazeiroDireito.Girar(_impulso);
-                PneuTrazeiroEsquerdo.Girar(_impulso);
-                VelocidadeAtual += _impulso;
+                if(_impulso>=0)
+                {
+                    PneuDianteiroDireito.Girar(_impulso);
+                    PneuDianteiroEsquerdo.Girar(_impulso);
+                    PneuTrazeiroDireito.Girar(_impulso);
+                    PneuTrazeiroEsquerdo.Girar(_impulso);
+                    VelocidadeAtual += _impulso;
+                }
+                else if(_impulso<0)
+                {
+                    _impulso = 0;
+                    PneuDianteiroDireito.Girar(_impulso);
+                    PneuDianteiroEsquerdo.Girar(_impulso);
+                    PneuTrazeiroDireito.Girar(_impulso);
+                    PneuTrazeiroEsquerdo.Girar(_impulso);
+                    VelocidadeAtual += _impulso;
+                }
             }
+            GastarCombustivel(_impulso / 100.0);
+
         }
         public void Frear(int _abatimento)
         {
             VelocidadeAtual -= _abatimento;
             if (VelocidadeAtual < 0)
                 VelocidadeAtual = 0;
+            if(pneuDianteiroDireito.Rotacao==0)
+            {
+                VelocidadeAtual = 0;
+            }
 
             PneuDianteiroDireito.Frear(_abatimento);
             PneuDianteiroEsquerdo.Frear(_abatimento);
             PneuTrazeiroDireito.Frear(_abatimento);
             PneuTrazeiroEsquerdo.Frear(_abatimento);
         }
+
         public void GastarCombustivel(double _fracao)
         {
             Tanque -= _fracao;
             if (Tanque < 0)
+            { 
                 Tanque = 0;
+            }
         }
         public void Exibir()
         {
@@ -149,7 +193,12 @@ namespace Models
 
         public void Abastecer(double _quantidade)
         {
+
             Tanque += _quantidade;
+            if (Tanque >= 60)
+            {
+                Tanque = 60;
+            }
         }
     }
 }
